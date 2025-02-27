@@ -1,12 +1,21 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { Component, inject } from '@angular/core';
+import { ProfileCardComponent } from './common-ui/profile-card/profile-card.component';
+import { ProfileService } from './data/services/profile.service';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [ProfileCardComponent, CommonModule],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrl: './app.component.scss',
 })
 export class AppComponent {
-  title = 'angular-app-example';
+  profileService = inject(ProfileService);
+  profiles = [];
+
+  constructor() {
+    this.profileService.getTestAccounts().subscribe((val) => {
+      console.log(val);
+    });
+  }
 }
