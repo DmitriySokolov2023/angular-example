@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
-import { tap } from 'rxjs';
+import { catchError, tap, throwError } from 'rxjs';
 import { TokenResponse } from '../data/interfaces/auth.interface';
 
 @Injectable({
@@ -9,6 +10,7 @@ import { TokenResponse } from '../data/interfaces/auth.interface';
 })
 export class AuthService {
   http = inject(HttpClient);
+  router = inject(Router);
   baseUrl = 'https://icherniakov.ru/yt-course/auth';
   token: string | null = '';
   refreshToken: string | null = '';
@@ -37,8 +39,22 @@ export class AuthService {
   }
 
   refreshAuthToken() {
-    return this.http.post<TokenResponse>(`${this.baseUrl}/token`, {
-      refresh_token: this.refreshToken,
-    });
+    return this.http
+      .post<TokenResponse>(`${this.baseUrl}/token`, {
+        refresh_token: this.refreshToken,
+      })
+      .pipe(
+        catchError((err) => {
+          this.logout();
+          return throwError(err);
+        })
+      );
+  }
+
+  logout() {
+    this.cookieService.deleteAll();
+    this.token = null;
+    this.refreshToken = null;
+    this.router.navigate(['']);
   }
 }
