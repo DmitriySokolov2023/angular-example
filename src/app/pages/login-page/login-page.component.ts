@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -26,6 +26,7 @@ export class LoginPageComponent {
       Validators.minLength(6),
     ]),
   });
+  isPasswordVisible = signal<boolean>(false);
 
   onSubmit() {
     if (this.form.valid) {
