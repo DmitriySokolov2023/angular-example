@@ -13,6 +13,6 @@ export class LayoutComponent implements OnInit {
   profileService = inject(ProfileService);
 
   ngOnInit(): void {
-    this.profileService.getMe().subscribe();
+    this.profileService.getMe().subscribe((value) => console.log(value));
   }
 }
