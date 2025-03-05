@@ -1,21 +1,23 @@
 <img src="/assets/svg/logo-small.svg" alt="" class="ml16 mb20" />
 <nav>
-  <ul class="main-menu-list">
+  <ul class="main-menu-list mb16">
+    @for (menuItem of menuItems; track $index) {
+    <li></li>
     <li>
       <button class="menu-item">
-        <svg icon="home"></svg>
-        Моя страница
+        <svg [icon]="menuItem.icon"></svg>
+        {{ menuItem.label }}
       </button>
     </li>
-    <li>
-      <button class="menu-item">
-        <img src="/assets/svg/chats.svg" alt="" />Чаты
-      </button>
-    </li>
-    <li>
-      <button class="menu-item">
-        <img src="/assets/svg/search.svg" alt="" />Поиск
-      </button>
-    </li>
+    }
   </ul>
 </nav>
+
+<p class="medium-text">Подписчики</p>
+<app-subscriber-card></app-subscriber-card>
+
+<div class="mt20 to-subscribers">
+  <a [routerLink]="['/subscribers']" class="to-subscribers-link medium-text"
+    >Все подписчики</a
+  >
+</div>
