@@ -14,13 +14,25 @@
 </nav>
 
 <p class="medium-text">Подписчики</p>
-<app-subscriber-card></app-subscriber-card>
-<pre>
-  {{ subscribers$ | async | json }}
-</pre>
+
+@for (profile of subscribers$ | async; track $index) {
+<app-subscriber-card [profile]="profile"></app-subscriber-card>
+}
 
 <div class="mt20 to-subscribers">
   <a [routerLink]="['/subscribers']" class="to-subscribers-link medium-text"
     >Все подписчики</a
   >
 </div>
+
+<footer class="sidebar__footer">
+  @if (me(); as me) { @if (me.avatarUrl) {
+  <img [src]="me.avatarUrl | imgUrl" alt="" />
+  } @else {
+  <img src="/assets/imgs/avatar-placeholder.png" alt="" />
+  }
+
+  <div class="medium-text username-text">{{ me.username }}</div>
+
+  }
+</footer>

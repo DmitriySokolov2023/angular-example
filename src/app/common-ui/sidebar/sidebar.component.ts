@@ -1,7 +1,9 @@
-import { AsyncPipe, JsonPipe } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { AsyncPipe } from '@angular/common';
+import { Component, inject, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { map } from 'rxjs';
 import { ProfileService } from '../../data/services/profile.service';
+import { ImgUrlPipe } from '../../helpers/pipes/img-url.pipe';
 import { SvgComponent } from '../svg/svg.component';
 import { SubscriberCardComponent } from './subscriber-card/subscriber-card.component';
 
@@ -11,15 +13,20 @@ import { SubscriberCardComponent } from './subscriber-card/subscriber-card.compo
     SvgComponent,
     SubscriberCardComponent,
     RouterLink,
-    JsonPipe,
     AsyncPipe,
+    ImgUrlPipe,
   ],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.scss',
 })
-export class SidebarComponent {
+export class SidebarComponent implements OnInit {
   profileService = inject(ProfileService);
-  subscribers$ = this.profileService.getSubscribers();
+  subscribers$ = this.profileService.getSubscribers().pipe(
+    map((res) => {
+      return res.items.slice(1, 4);
+    })
+  );
+  me = this.profileService.me;
 
   menuItems = [
     {
@@ -38,10 +45,8 @@ export class SidebarComponent {
       link: 'search',
     },
   ];
-  // ngOnInit(): void {
-  //   this.profileService.getSubscribers().subscribe((val) => {
-  //     this.profile = val.items;
-  //     console.log(this.profile);
-  //   });
-  // }
+
+  ngOnInit(): void {
+    // firstValueFrom(this.profileService.getMe());
+  }
 }

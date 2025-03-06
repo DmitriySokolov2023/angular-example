@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
+import { tap } from 'rxjs';
 import { Pageble } from '../interfaces/pageble.interface';
 import { Profile } from '../interfaces/profile.interface';
 
@@ -9,14 +10,18 @@ import { Profile } from '../interfaces/profile.interface';
 export class ProfileService {
   http = inject(HttpClient);
   baseApiUrl = 'https://icherniakov.ru/yt-course/';
-  constructor() {}
+  me = signal<Profile | null>(null);
 
   getTestAccounts() {
     return this.http.get<Profile[]>(`${this.baseApiUrl}account/test_accounts`);
   }
 
   getMe() {
-    return this.http.get<Profile>(`${this.baseApiUrl}account/me`);
+    return this.http.get<Profile>(`${this.baseApiUrl}account/me`).pipe(
+      tap((res) => {
+        this.me.set(res);
+      })
+    );
   }
 
   getSubscribers() {
