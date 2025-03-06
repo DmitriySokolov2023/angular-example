@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
+import { Pageble } from '../interfaces/pageble.interface';
 import { Profile } from '../interfaces/profile.interface';
 
 @Injectable({
@@ -16,5 +17,11 @@ export class ProfileService {
 
   getMe() {
     return this.http.get<Profile>(`${this.baseApiUrl}account/me`);
+  }
+
+  getSubscribers() {
+    return this.http.get<Pageble<Profile>>(
+      `${this.baseApiUrl}account/subscribers/?page=1&size=50`
+    );
   }
 }

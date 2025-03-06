@@ -15,6 +15,9 @@
 
 <p class="medium-text">Подписчики</p>
 <app-subscriber-card></app-subscriber-card>
+<pre>
+  {{ subscribers$ | async | json }}
+</pre>
 
 <div class="mt20 to-subscribers">
   <a [routerLink]="['/subscribers']" class="to-subscribers-link medium-text"
