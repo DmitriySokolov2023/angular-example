@@ -24,6 +24,10 @@ export class ProfileService {
     );
   }
 
+  getAccount(id: string) {
+    return this.http.get<Profile>(`${this.baseApiUrl}account/${id}`);
+  }
+
   getSubscribers() {
     return this.http.get<Pageble<Profile>>(
       `${this.baseApiUrl}account/subscribers/?page=1&size=50`

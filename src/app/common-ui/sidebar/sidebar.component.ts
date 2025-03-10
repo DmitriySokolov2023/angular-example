@@ -1,7 +1,7 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { map } from 'rxjs';
+import { firstValueFrom, map } from 'rxjs';
 import { ProfileService } from '../../data/services/profile.service';
 import { ImgUrlPipe } from '../../helpers/pipes/img-url.pipe';
 import { SvgComponent } from '../svg/svg.component';
@@ -47,6 +47,6 @@ export class SidebarComponent implements OnInit {
   ];
 
   ngOnInit(): void {
-    // firstValueFrom(this.profileService.getMe());
+    firstValueFrom(this.profileService.getMe());
   }
 }
